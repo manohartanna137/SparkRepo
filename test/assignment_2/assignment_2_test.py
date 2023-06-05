@@ -3,11 +3,11 @@ from pyspark import SparkContext
 from src.assignment_2.utils import *
 
 
-class GHTorrentLogAnalysisTest(unittest.TestCase):
+class Test(unittest.TestCase):
 
     def setUp(self):
         self.file_path = "../../resource/ghtorrent-logs.txt"
-        self.log_rdd = load_log_rdd(self.file_path)
+        self.log_rdd = load_rdd(self.file_path)
         self.api_client_lines = self.log_rdd.filter(lambda line: 'api_client' in line)
 
     def test_count_lines(self):
@@ -22,7 +22,7 @@ class GHTorrentLogAnalysisTest(unittest.TestCase):
         self.assertEqual(processed_repositories_count, 37596)
 
     def test_client_with_most_requests(self):
-        most_requests_client = client_with_most_requests(self.api_client_lines)
+        most_requests_client = client_with_most_http_requests(self.api_client_lines)
         self.assertEqual(most_requests_client, "api_client.rb: Unauthorised request with token: 46f11b5791b7db9077f4d9a9ab27f93e89dccad4")
 
     def test_client_with_most_failed_requests(self):

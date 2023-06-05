@@ -10,12 +10,7 @@ class MyTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.spark = (SparkSession
-                     .builder
-                     .master("local[*]")
-                     .appName("PySpark-unit-test")
-                     .config('spark.port.maxRetries', 30)
-                     .getOrCreate())
+        cls.spark = (SparkSession.builder.master("local[*]").appName("PySpark-unit-test").config('spark.port.maxRetries', 30).getOrCreate())
 
     @classmethod
     def tearDownClass(cls):

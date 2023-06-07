@@ -1,28 +1,27 @@
 
 from src.assignment_2.utils import *
 
-file_path = "../../resource/ghtorrent-logs.txt"
-
-log_rdd = load_rdd(file_path)
+file_path ="C:/Users/hp/PycharmProjects/SparkRepo/resource/ghtorrent-logs.txt"
+log_rdd = load_log_rdd(file_path)
 print(log_rdd)
 
-line_count = count_lines(log_rdd)
-print("Number of lines:", line_count)
+num_lines = num_of_lines(log_rdd)
+print("Number of lines:", num_lines)
 
-warning_count = count_warning_messages(log_rdd)
-print('Number of warnings:', warning_count)
+num_warnings = warning_messages(log_rdd)
+print('Number of warnings:', num_warnings)
+num_api_lines = process_repositories(log_rdd)
+print("Number of api client lines:", num_api_lines)
 
-api_client_lines = count_processed_repositories(log_rdd)
-print("Number of api client lines:", api_client_lines)
+num_api_lines = log_rdd.filter(lambda line: 'api_client' in line)
 
-api_client_lines = log_rdd.filter(lambda line: 'api_client' in line)
-most_http_requests_client = client_with_most_http_requests(api_client_lines)
-print(most_http_requests_client)
+more_request = most_requests(num_api_lines)
+print(more_request)
 
-most_failed_requests_client = client_with_most_failed_requests(log_rdd)
+most_failed_requests_client = failed_requests(log_rdd)
 print(most_failed_requests_client)
 
-most_active_repo_count = count_most_active_repository(log_rdd)
+most_active_repo_count = active_repository(log_rdd)
 print(most_active_repo_count)
 
 

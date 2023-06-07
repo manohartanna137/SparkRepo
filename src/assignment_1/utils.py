@@ -11,13 +11,13 @@ def Spark_Session():
 
 
 # creating a data frame for user.csv file
-def user_dataframe(spark):
+def users_data(spark):
     user_df = spark.read.csv("../../resource/user.csv", header="true", inferSchema="true")
     return user_df
 
 
 # creating a data frame of transaction.csv file
-def transaction_dataframe(spark):
+def transc_data(spark):
     transaction_df = spark.read.csv("../../resource/transaction.csv", header="true", inferSchema="true")
     return transaction_df
 
@@ -28,20 +28,20 @@ def join_dataframe(user_df, transaction_df):
     return join_df
 
 # getting the unique locations where the product is sold
-def unique_location(join_df):
-    product_unique_locations = join_df.groupBy("product_description", "location ").agg(
+def loc_unique(join_df):
+    unique_locations = join_df.groupBy("product_description", "location ").agg(
         countDistinct("location "))
-    return product_unique_locations
+    return unique_locations
 
 # getting  list of products by using user_id
-def user_products(join_df):
-    product_ = join_df.groupBy('userid').agg(collect_set("product_id").alias("Bought_Products"))
-    return product_
+def prod_user(join_df):
+    product_user = join_df.groupBy('userid').agg(collect_set("product_id"))
+    return product_user
 
 # finding the total amount of spending by each user on each product
-def total_spending(join_df):
-    total = join_df.groupBy('userid', 'product_id').agg(sum('price'))
-    return total
+def total_spending_user(join_df):
+    a = join_df.groupBy('userid', 'product_id').agg(sum('price'))
+    return a
 
 
 

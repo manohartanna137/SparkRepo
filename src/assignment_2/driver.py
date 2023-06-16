@@ -1,28 +1,38 @@
 
 from src.assignment_2.utils import *
 
-file_path ="C:/Users/hp/PycharmProjects/SparkRepo/resource/ghtorrent-logs.txt"
-log_rdd = load_log_rdd(file_path)
-print(log_rdd)
+spark=spark_session()
 
-num_lines = num_of_lines(log_rdd)
-print("Number of lines:", num_lines)
+filepath= "../../resource/ghtorrent-logs.txt"
+rdd=creating_rdd(spark,filepath)
 
-num_warnings = warning_messages(log_rdd)
-print('Number of warnings:', num_warnings)
-num_api_lines = process_repositories(log_rdd)
-print("Number of api client lines:", num_api_lines)
 
-num_api_lines = log_rdd.filter(lambda line: 'api_client' in line)
+num_lines=num_of_lines(rdd)
 
-more_request = most_requests(num_api_lines)
-print(more_request)
 
-most_failed_requests_client = failed_requests(log_rdd)
-print(most_failed_requests_client)
+df=reading_file(spark,filepath)
 
-most_active_repo_count = active_repository(log_rdd)
-print(most_active_repo_count)
+df_torrent = create_dataframe_from_rdd(df)
+
+df_warn=warn_messages(df_torrent)
+
+df_api_clients=api_clients(df_torrent)
+
+
+df_most_http_requests=most_http_requests(df_torrent)
+df_most_http_requests.show()
+#
+df_most_failed_requests=most_failed_requests(df_torrent)
+df_most_failed_requests.show()
+#
+df_most_active_hours=most_active_hours(df_torrent)
+df_most_active_hours.show()
+#
+df_most_active_repositories=most_active_repositories(df_torrent)
+df_most_active_repositories.show()
+
+
+
 
 
 
